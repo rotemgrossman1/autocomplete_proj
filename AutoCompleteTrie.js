@@ -47,9 +47,9 @@ class AutoCompleteTrie{
                 return false;
             }
         }
-        return true
+        // return true
         //possibly do this:
-        // return currentNode.endOfWord;
+        return currentNode.endOfWord;
     }
     // Navigates to the last node of the given prefix
     // Returns the node where the prefix ends
@@ -80,6 +80,19 @@ class AutoCompleteTrie{
         }
     
     }
+    // Takes a word prefix (e.g., "ca")
+    // Returns array of all possible completions
+    // Example: prefix "ca" might return ["cat", "car", "card", "care"]
+    predictWords(prefix){
+        let currentNode = this._getRemainingTree(prefix, this)
+        let wordsArr=[]
+        if (currentNode === null) {
+            return wordsArr;
+        }
+        this._allWordsHelper(prefix, currentNode, wordsArr)
+        return wordsArr
+    }
+
 
 
 }
