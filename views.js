@@ -25,6 +25,9 @@ export function printWordAdded(word){
 export function printWordExists(word){
     console.log(`✓ '${word}' exists in dictionary`)
 }
+export function printNotFound(word){
+    console.log(`✗ '${word}' not found in dictionary`)
+}
 export function printPredictions(prefix, predictions){
     console.log(`Suggestions for ${prefix}: ${predictions}`)
 }

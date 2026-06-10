@@ -1,7 +1,9 @@
 // 1. Import the core module
 const readline = require('readline');
 const views = require('./views')
-const autoComplete = require('./AutoCompleteTrie')
+
+const AutoCompleteTrie = require('./AutoCompleteTrie'); 
+const autoComplete = new AutoCompleteTrie();           
 // 2. Open the input and output streams to your terminal
 const rl = readline.createInterface({
     input: process.stdin,
@@ -32,6 +34,10 @@ function startAppLoop() {
         } else {
             let command = arrInput[0]
             switch(command){
+                case "exit":
+                    views.printExit();
+                    rl.close(); 
+                    return;
                 case "help":
                    views.printHelp() 
                    break;
@@ -39,16 +45,31 @@ function startAppLoop() {
                     const word = arrInput[1]
                     if(!autoComplete.findWord(word)){
                         autoComplete.addWord(word)
-                        printWordAdded(word)
+                        views.printWordAdded(word)
                     }
                     else{
-                        printWordExists(word)
+                        views.printWordExists(word)
+                    }
+                    break;
+                case "find":
+                    if (!arrInput[1]) {
+                        const argument = arrInput[1]
+                        console.log("✗ Please provide a word to find. (e.g., find cat)\n");
+                        break;
+                    }
+                    if (autoComplete.findWord(argument)) {
+                        views.printWordExists(argument);
+                    } else {
+                        views.printNotFound(argument);
                     }
                     break;
                 case "complete":
                     const prefix = arrInput[1]
-                    const predictions = autoComplete.predictedWords(prefix)
+                    const predictions = autoComplete.predictWords(prefix)
                     views.printPredictions(prefix, predictions)
+                    break;
+                default:
+                    console.log(`✗ Unknown command: '${command}'. Type 'help' for commands.\n`);
 
             }
 
