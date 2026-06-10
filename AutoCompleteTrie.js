@@ -9,6 +9,8 @@ class AutoCompleteTrie{
         return this.children[letter] || null; 
     }
     addWord(word){
+        //if word is not a string of one word (does not contain spaces) print error message and return, it should be one word without numbers, spaces or special characters
+        
         let n = word.length;
         let i = 0;
         let currentNode = this
@@ -30,13 +32,15 @@ class AutoCompleteTrie{
             }
         }
         currentNode.endOfWord=true
-        
+        return true;
 
     }
 //     findWord(word)
 // Returns true if word exists in trie
 // Returns false if word doesn't exist
     findWord(word){
+        //if word is not a string of one word (does not contain spaces) print error message and return
+        
         let currentNode = this
         for(let letter of word){
             let nextNode = currentNode.searchChildren(letter);

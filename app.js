@@ -3,7 +3,22 @@ const readline = require('readline');
 const views = require('./views')
 
 const AutoCompleteTrie = require('./AutoCompleteTrie'); 
-const autoComplete = new AutoCompleteTrie();           
+const autoComplete = new AutoCompleteTrie();   
+//helper function to determine correct number of arguments
+function verifyNumberofArguments(command, arg, numOfArguments){
+    if (arg.length > numOfArguments) {
+        return false;
+    }else if (arg.length < numOfArguments) {
+        return false;
+    }else{
+        return true;
+    }
+}  
+
+//helper check if a word is valid
+function isValidWord(word) {
+    return /^[a-zA-Z]+$/.test(word);
+}
 // 2. Open the input and output streams to your terminal
 const rl = readline.createInterface({
     input: process.stdin,
@@ -18,60 +33,80 @@ function startAppLoop() {
         // Clean up the text input
         const cleanInput = userInput.trim().toLowerCase();
 
-        // Check for the exit condition first
-        if (cleanInput === 'exit') {
-            views.printExit()
-            rl.close(); // Closes the terminal stream, ending the script execution
-            return;     // Stop the function early so it doesn't call itself again
-        }
 
         //convert clean input into an array separated by spacebar
         let arrInput = cleanInput.split(" ")
 
 
-        if (arrInput.length>2) {//isNan checks if the value is not a number, if it is not a number it will return true and we will print the error message
-            console.log("✗ Too many arguments\n");
-        } else {
-            let command = arrInput[0]
-            switch(command){
-                case "exit":
-                    views.printExit();
-                    rl.close(); 
-                    return;
-                case "help":
-                   views.printHelp() 
-                   break;
-                case "add":
-                    const word = arrInput[1]
-                    if(!autoComplete.findWord(word)){
-                        autoComplete.addWord(word)
-                        views.printWordAdded(word)
-                    }
-                    else{
-                        views.printWordExists(word)
-                    }
+    
+        let command = arrInput[0]
+        switch(command){
+            case "exit":
+                if(!verifyNumberofArguments(command, arrInput, 1)){
+                    views.printArgumentsProblem(command, 1)
                     break;
-                case "find":
-                    if (!arrInput[1]) {
-                        const argument = arrInput[1]
-                        console.log("✗ Please provide a word to find. (e.g., find cat)\n");
-                        break;
-                    }
-                    if (autoComplete.findWord(argument)) {
-                        views.printWordExists(argument);
-                    } else {
-                        views.printNotFound(argument);
-                    }
+                }
+                views.printExit();
+                rl.close(); 
+                return;
+            case "help":
+                if(!verifyNumberofArguments(command, arrInput, 1)){
+                    views.printArgumentsProblem(command, 1)
                     break;
-                case "complete":
-                    const prefix = arrInput[1]
-                    const predictions = autoComplete.predictWords(prefix)
-                    views.printPredictions(prefix, predictions)
+                }
+                views.printHelp() 
+                break;
+            case "add":
+                if(!verifyNumberofArguments(command, arrInput, 2)){
+                    views.printArgumentsProblem(command, 2)
                     break;
-                default:
-                    console.log(`✗ Unknown command: '${command}'. Type 'help' for commands.\n`);
-
-            }
+                }
+                const word = arrInput[1]
+                if(!isValidWord(word)){
+                    views.printInvalidWord(word)
+                    break;
+                }
+                if(!autoComplete.findWord(word)){
+                    if(autoComplete.addWord(word)){
+                    views.printWordAdded(word)
+                    }
+                }
+                else{
+                    views.printWordExists(word)
+                }
+                break;
+            case "find":
+                if(!verifyNumberofArguments(command, arrInput, 2)){
+                    views.printArgumentsProblem(command, 2)
+                    break;
+                }
+                const argument = arrInput[1]
+                if(!isValidWord(argument)){
+                    views.printInvalidWord(argument)
+                    break;
+                }
+                if (autoComplete.findWord(argument)) {
+                    views.printWordExists(argument);
+                } else {
+                    views.printNotFound(argument);
+                }
+                break;
+            case "complete":
+                if(!verifyNumberofArguments(command, arrInput, 2)){
+                    views.printArgumentsProblem(command, 2)
+                    break;
+                }
+                const prefix = arrInput[1]
+                if(!isValidWord(prefix)){
+                    views.printInvalidWord(prefix)
+                    break;
+                }
+                const predictions = autoComplete.predictWords(prefix)
+                views.printPredictions(prefix, predictions)
+                break;
+            default:
+                views.printBadCommand(command)
+            
 
             
             

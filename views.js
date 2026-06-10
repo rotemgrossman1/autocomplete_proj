@@ -1,15 +1,15 @@
-export function printHeader(){
+function printHeader(){
     console.log("=== AutoComplete Trie Console ===");
     console.log("Type 'help' for commands\n");
 
 }
-export function printExit(){
+function printExit(){
     console.log("Goodbye!");
 }
-export function handleCommand(command){
+function handleCommand(command){
 
 }
-export function printHelp(){
+function printHelp(){
     console.log(`
         Commands:
         add <word>      - Add word to dictionary
@@ -19,15 +19,37 @@ export function printHelp(){
         exit           - Quit program
     `);
 }
-export function printWordAdded(word){
+function printWordAdded(word){
     console.log(`✓ Added '${word}' to dictionary`)
 }
-export function printWordExists(word){
+function printWordExists(word){
     console.log(`✓ '${word}' exists in dictionary`)
 }
-export function printNotFound(word){
+function printNotFound(word){
     console.log(`✗ '${word}' not found in dictionary`)
 }
-export function printPredictions(prefix, predictions){
-    console.log(`Suggestions for ${prefix}: ${predictions}`)
+function printPredictions(prefix, predictions){
+    console.log(`Suggestions for ${prefix}: ${predictions.join(', ')}`)
 }
+function printBadCommand(command){
+    console.log(`✗ Unknown command: '${command}'. Type 'help' for commands.\n`);
+}
+function printArgumentsProblem(command, expectedArgs){
+    console.log(`✗ Invalid arguments for '${command}' command. Expected ${expectedArgs -1} argument(s).\n`);
+}
+function printInvalidWord(word){
+    console.log(`✗ Invalid input '${word}'. Please enter a single word without spaces or special characters.\n`);
+}
+module.exports = {
+    printHeader,
+    printExit,
+    handleCommand,
+    printHelp,
+    printWordAdded,
+    printWordExists,
+    printPredictions,
+    printNotFound,
+    printBadCommand,
+    printInvalidWord,
+    printArgumentsProblem
+};
