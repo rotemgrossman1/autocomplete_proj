@@ -1,0 +1,23 @@
+{
+  "name": "autocomplete_proj",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/rotemgrossman1/autocomplete_proj#readme",
+  "bugs": {
+    "url": "https://github.com/rotemgrossman1/autocomplete_proj/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rotemgrossman1/autocomplete_proj.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "AutoCompleteTrie.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^30.4.2"
+  }
+}
