@@ -66,6 +66,21 @@ class AutoCompleteTrie{
         }
         return currentNode
     }
+    // Recursively collects all words from a given node
+    // Builds complete words by concatenating characters
+    // Adds words to allWords array when endOfWord = true
+    _allWordsHelper(prefix, node, allWords){
+        if(node.endOfWord){
+            allWords.push(prefix)//if reached a end of a word add it to the allwords array
+        }
+        for(let letter in node.children){
+            let childNode = node.children[letter]
+            this._allWordsHelper(prefix +letter, childNode, allWords)
+            
+        }
+    
+    }
+
 
 }
 
