@@ -33,6 +33,40 @@ class AutoCompleteTrie{
         
 
     }
+//     findWord(word)
+// Returns true if word exists in trie
+// Returns false if word doesn't exist
+    findWord(word){
+        let currentNode = this
+        for(let letter of word){
+            let nextNode = this.searchChildren(currentNode, letter)
+            if(nextNode!==null){//this means the next letter in word is aleady in our tire
+                currentNode = nextNode
+            }
+            else{//letter doesnt exist in tyre so return false
+                return false;
+            }
+        }
+        return true
+        //possibly do this:
+        // return currentNode.endOfWord;
+    }
+    // Navigates to the last node of the given prefix
+    // Returns the node where the prefix ends
+    _getRemainingTree(prefix, node){
+        let currentNode = this
+        for(let letter of prefix){
+            let nextNode = this.searchChildren(currentNode, letter)
+            if(nextNode!==null){//this means the next letter in word is aleady in our tire
+                currentNode = nextNode
+            }
+            else{
+                return null
+            }
+        }
+        return currentNode
+    }
+
 }
 
 
